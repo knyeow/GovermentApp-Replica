@@ -13,7 +13,7 @@ function App() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#home">Ana Sayfa</Nav.Link>
+              <Nav.Link href="#home">Ana Sayfa313131</Nav.Link>
               <Nav.Link href="#services">Hizmetler</Nav.Link>
               <Nav.Link href="#contact">İletişim</Nav.Link>
             </Nav>
