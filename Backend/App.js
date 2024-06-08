@@ -2,7 +2,9 @@ const express = require('express');
 const mysql = require('mysql');
 const app = express();
 const port = 8090;
+const cors = require('cors');
 
+app.use(cors());
 app.use(express.json());
 
 // MySQL connection setup
