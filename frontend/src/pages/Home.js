@@ -18,12 +18,12 @@ import UserInfo from "../UserInfo";
 
 
 
+
+
 const Home = () => {
   return (
     <div>
-      <Container>
-        {UserInfo.userID};
-      </Container>
+      
       <Navbar bg="danger" variant="dark" expand="lg">
         <Container>
           <Navbar.Brand href="#home">e-Devlet Kapısı</Navbar.Brand>

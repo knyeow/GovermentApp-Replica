@@ -36,7 +36,7 @@ function Login() {
           UserInfo.userID = res.data[0].ID;
           UserInfo.userTC = res.data[0].TC;
           console.log(res.data);
-          navigate('/');    // NAVIGATION İŞLEMİ
+          navigate('/MainPage');    // NAVIGATION İŞLEMİ
 
         } else {
           alert("No Record Existed.");
