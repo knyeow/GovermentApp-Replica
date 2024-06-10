@@ -5,8 +5,6 @@ import App from './App';
 import 'bootstrap/dist/css/bootstrap.css'; 
 import './App.css';
 
-
-
 ReactDOM.render(
   <BrowserRouter>
     <App />
