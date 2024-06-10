@@ -8,7 +8,7 @@ import UserInfo from "../UserInfo";
 import axios from 'axios';
 
 function EducationRecord() {
-    
+
     const nameOfPDFDocument = "OgrenciBelgesi.pdf";
     const [user, setUser] = useState({ hasAnyData: false, name: "", surname: "", nationalId: "", SchoolName: "", EnterDate: "", ExitDate: "" });
     const [selectedDocument, setSelectedDocument] = useState(null);
@@ -18,27 +18,27 @@ function EducationRecord() {
     const [queryType, setQueryType] = useState("");
     const [documentExplanation, setDocumentExplanation] = useState("");
     const [documentNote, setDocumentNote] = useState("");
-    const[data,setData] = useState("");
+    const [data, setData] = useState("");
+    const [showGetPDFButton, setShowGetPDFButton] = useState(false);
 
     document.title = "Öğrenci Belgesi Sorgulama";
 
     const handleUserChange = () => {
-        setUser( u => 
-            ({
-                
-                hasAnyData: data.hasAnyData,
-                name: data.name,
-                surname: data.surname,
-                nationalId: UserInfo.userTC,
-                SchoolName: data.SchoolName,
-                EnterDate: data.EnterDate,
-                ExitDate: data.ExitDate
-            }));
+        setUser(u =>
+        ({
+            hasAnyData: data.hasAnyData,
+            name: data.name,
+            surname: data.surname,
+            nationalId: UserInfo.userTC,
+            SchoolName: data.SchoolName,
+            EnterDate: data.EnterDate,
+            ExitDate: data.ExitDate
+        }));
         let firstPart = 130, secondPart = 610, thirdPart = 1000;
         setStudentNo(() => String(firstPart + Math.floor(Math.random() * 9)) + String(secondPart + Math.floor(Math.random() * 90)) + String(thirdPart + Math.floor(Math.random() * 900)));
     }
 
-    const handleSubmit =  async (event) => {
+    const handleSubmit = async (event) => {
         try {
             const response = await axios.get('http://localhost:8090/userinfo/school/' + UserInfo.userID);
             setData(response.data);
@@ -46,7 +46,7 @@ function EducationRecord() {
         } catch (error) {
             console.log(error);
         }
-      };
+    };
 
 
 
@@ -66,17 +66,16 @@ function EducationRecord() {
     //*******************************
     const handleClick = () => {
         handleSubmit();
+        setShowGetPDFButton(true);
     }
 
     const handleClick2 = () => {
-
         handleUserChange();
         handleSelectedDocument();
         handleDocumentText();
         setQueryType("Öğrenci Belgesi");
-        setShowPreview(true);
+        setShowPreview(() => true);
     }
-
     //*******************************
 
     const isUserInfoComplete = user.hasAnyData && (user.name !== "" && user.surname !== "" && user.nationalId !== "" && user.SchoolName !== "" && studentNo !== "" && user.EnterDate !== "" && user.ExitDate !== "" && user.hasAnyData !== null);
@@ -122,14 +121,20 @@ function EducationRecord() {
                         variant="primary"
                         onClick={handleClick}
                         className="w-100 mt-3">
-                        Belge Talep et
+                        Belge Talebi İlet
                     </Button>
-                    <Button
-                        variant="primary"
-                        onClick={handleClick2}
-                        className="w-100 mt-3">
-                        Belgeyi İndir
-                    </Button>
+
+                    {
+                        showGetPDFButton &&
+                        <Button
+                            variant="primary"
+                            onClick={handleClick2}
+                            className="w-100 mt-3">
+                            Belgeyi İndir
+                        </Button>
+                    }
+
+
                 </Form>
             </Container>
 

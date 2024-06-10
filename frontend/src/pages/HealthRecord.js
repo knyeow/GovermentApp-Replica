@@ -4,7 +4,8 @@ import PDFDocument from '../Components/PDFDocument.js';
 import Card from '../Components/Card.js';
 import { Container, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import UserInfo from "../UserInfo";
+import axios from 'axios';
 
 function HealthRecord() {
     const nameOfPDFDocument = "SaglikBelgesi.pdf";
@@ -16,6 +17,8 @@ function HealthRecord() {
     const [queryType, setQueryType] = useState("");
     const [documentExplanation, setDocumentExplanation] = useState("");
     const [documentNote, setDocumentNote] = useState("");
+    const [data, setData] = useState("");
+    const [showGetPDFButton, setShowGetPDFButton] = useState(false);
 
     const bloodTypes = ["0", "A", "B", "AB"];
     const bloodType = bloodTypes[Math.floor(Math.random() * bloodTypes.length)] + String(Math.floor(Math.random() * 2) === 0 ? "+" : "-");
@@ -25,22 +28,24 @@ function HealthRecord() {
 
     const handleUserChange = () => {
         setUser({
-            hasAnyData: true,
-            name: "Ali",
-            surname: "Gönüllü",
-            nationalId: "33222888444",
-            disease: [
-                {
-                    name: "Korona",
-                    date: "2024-09-12"
-                },
-                {
-                    name: "Kızamık",
-                    date: "2024-07-01"
-                }
-            ]
+            hasAnyData: data.hasAnyData,
+            name: data.name,
+            surname: data.surname,
+            nationalId: UserInfo.userTC,
+            disease: data.crime
         });
     }
+
+
+    const handleSubmit = async (event) => {
+        try {
+            const response = await axios.get('http://localhost:8090/userinfo/health/' + UserInfo.userID);
+            setData(response.data);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleSelectedDocument = () => {
         setSelectedDocument(() => "Sağlık Belgesi");
@@ -53,6 +58,11 @@ function HealthRecord() {
 
     //*******************************
     const handleClick = () => {
+        handleSubmit();
+        setShowGetPDFButton(true);
+    }
+
+    const handleClick2 = () => {
         handleUserChange();
         handleSelectedDocument();
         handleDocumentText();
@@ -110,6 +120,15 @@ function HealthRecord() {
                     >
                         Belge Talebi İlet
                     </Button>
+                    {
+                        showGetPDFButton &&
+                        <Button
+                            variant="primary"
+                            onClick={handleClick2}
+                            className="w-100 mt-3">
+                            Belgeyi İndir
+                        </Button>
+                    }
                 </Form>
             </Container>
 

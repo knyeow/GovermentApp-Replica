@@ -19,7 +19,7 @@
     "react-renderer": "^0.1.4",
     "react-router-dom": "^6.23.1",
     "react-script": "^2.0.5",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "reactstrap": "^9.2.2",
     "web-vitals": "^2.1.4"
   },

@@ -4,6 +4,8 @@ import PDFDocument from '../Components/PDFDocument.js';
 import Card from '../Components/Card.js';
 import { Container, Nav, Navbar, Form, FormControl, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import UserInfo from "../UserInfo";
+import axios from 'axios';
 
 function CriminalRecord() {
     const nameOfPDFDocument = "AdliSicilKaydi.pdf";
@@ -14,40 +16,33 @@ function CriminalRecord() {
     const [queryType, setQueryType] = useState("");
     const [documentExplanation, setDocumentExplanation] = useState("");
     const [documentNote, setDocumentNote] = useState("");
+    const [data, setData] = useState("");
+    const [showGetPDFButton, setShowGetPDFButton] = useState(false);
 
     document.title = "Adli Sicil Kaydı Sorgulama";
 
     const handleUserChange = () => {
-        setUser({
-            hasAnyData: true, name: "Ali", surname: "Gönüllü", nationalId: "33222888444",
-            crime: [
-                {
-                    name: "Trafik Kural İhlali: İzinsiz köprü geçişi",
-                    date: "2019-05-10"
-                },
-                {
-                    name: "Vergi Kaçırma",
-                    date: "2018-06-05"
-                },
-                {
-                    name: "Trafik Kural İhlali: Kırmızı ışıkta geçme",
-                    date: "2021-02-17"
-                },
-                {
-                    name: "Trafik Kural İhlali: Hız sınırı aşma",
-                    date: "2020-01-10"
-                },
-                {
-                    name: "Vergi kaçırma",
-                    date: "2018-06-05"
-                },
-                {
-                    name: "Trafik Kural İhlali: Kırmızı ışıkta geçme",
-                    date: "2017-08-11"
-                },
-            ]
-        });
+        setUser(u => ({
+            hasAnyData: data.hasAnyData,
+            name: data.name,
+            surname: data.surname,
+            nationalId: UserInfo.userTC,
+            crime: data.crime
+        }));
     }
+
+
+    const handleSubmit = async (event) => {
+        try {
+            const response = await axios.get('http://localhost:8090/userinfo/registry/' + UserInfo.userID);
+            setData(response.data);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
 
     const handleDocumentText = () => {
         setDocumentExplanation("Yukarıdaki kimlik bilgileri ile yapılan sorgulama neticesinde, ilgili kişinin adli sicil durumu hakkında aşağıdaki bilgiler elde edilmiştir. Bu belge, resmi makamlar tarafından istenildiği durumlarda kullanılmak üzere düzenlenmiştir.");
@@ -61,6 +56,11 @@ function CriminalRecord() {
 
     //*******************************
     const handleClick = () => {
+        handleSubmit();
+        setShowGetPDFButton(true);
+    }
+
+    const handleClick2 = () => {
         handleUserChange();
         handleSelectedDocument();
         handleDocumentText();
@@ -68,6 +68,7 @@ function CriminalRecord() {
         setShowPreview(() => true);
     }
     //*******************************
+
 
     const handleSearch = (e) => {
         setSearchQuery(() => e.target.value);
@@ -117,6 +118,15 @@ function CriminalRecord() {
                         className="w-100 mt-3">
                         Belge Talebi İlet
                     </Button>
+                    {
+                        showGetPDFButton &&
+                        <Button
+                            variant="primary"
+                            onClick={handleClick2}
+                            className="w-100 mt-3">
+                            Belgeyi İndir
+                        </Button>
+                    }
                 </Form>
             </Container>
 
