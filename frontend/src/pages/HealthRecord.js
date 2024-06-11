@@ -32,7 +32,7 @@ function HealthRecord() {
             name: data.name,
             surname: data.surname,
             nationalId: UserInfo.userTC,
-            disease: data.crime
+            disease: data.disease
         });
     }
 
